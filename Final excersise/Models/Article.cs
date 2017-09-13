@@ -15,8 +15,8 @@ namespace Final_excersise.Models
         public DateTime PublishDate { get; set; }
         public string Image { get; set; }
         public string Url { get; set; }
-        public Article[] Related { get; set; }
-        public Category[] Categories { get; set; }
+        public List<string> Related { get; set; }
+        public List<Category> Categories { get; set; }
         public bool IsLiked { get; set; }
     }
 }

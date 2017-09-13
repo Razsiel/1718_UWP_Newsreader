@@ -1,14 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Final_excersise.Models;
+using Final_excersise.Services.Results;
+using Newtonsoft.Json;
 
 namespace Final_excersise.Services
 {
-    public class ArticleService
+    public class ArticleService : ServiceBase, IArticleService
     {
-        private const string BaseUri = "http://inhollandbackend.azurewebsites.net/";
-        private const string Uri = "api/articles";
+        private static ArticleService _articleService;
+
+        public static ArticleService SingleInstance => _articleService ?? (_articleService = new ArticleService());
+
+        private ArticleService()
+        {
+        }
+
+        protected override string ServiceUri => "api/articles";
+
+        public async Task<ArticlesResult> GetArticles()
+        {
+            var uri = ServiceUri;
+            var result = await base.GetJsonResultAsync<ArticlesResult>(uri);
+            return result;
+        }
+
+        public async Task<ArticlesResult> GetArticleAsync(uint id)
+        {
+            var uri = $"{ServiceUri}/{id}";
+            var result = await base.GetJsonResultAsync<ArticlesResult>(uri);
+            return result;
+        }
+    }
+
+    public interface IArticleService
+    {
+        Task<ArticlesResult> GetArticles();
+        Task<ArticlesResult> GetArticleAsync(uint id);
     }
 }
