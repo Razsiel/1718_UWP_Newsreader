@@ -97,9 +97,12 @@
     </Compile>
     <Compile Include="Models\Article.cs" />
     <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\Feed.cs" />
+    <Compile Include="ViewModels\Settings.cs" />
     <Compile Include="Services\ArticleService.cs" />
     <Compile Include="Services\FeedService.cs" />
     <Compile Include="Services\Results\ArticleResult.cs" />
+    <Compile Include="Services\Results\FeedResult.cs" />
     <Compile Include="Services\ServiceBase.cs" />
     <Compile Include="ViewModels\ArticleDetailViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

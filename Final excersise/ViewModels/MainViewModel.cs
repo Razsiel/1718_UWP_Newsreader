@@ -31,6 +31,8 @@ namespace Final_excersise.ViewModels
         }
 
         public ObservableIncrementalLoadingCollection<Article> Articles { get; set; }
+        public Settings Settings { get; set; }
+
         public RelayCommand ArticleClickCommand { get; }
 
         private List<Article> ArticlesOnLoadMoreItemsEvent(uint count)

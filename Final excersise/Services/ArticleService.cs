@@ -12,9 +12,7 @@ namespace Final_excersise.Services
 {
     public class ArticleService : ServiceBase, IArticleService
     {
-        private static ArticleService _articleService;
-
-        public static ArticleService SingleInstance => _articleService ?? (_articleService = new ArticleService());
+        public static ArticleService SingleInstance { get; } = new ArticleService();
 
         private ArticleService()
         {
