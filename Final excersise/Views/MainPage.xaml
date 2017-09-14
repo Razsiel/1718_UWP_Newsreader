@@ -6,7 +6,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-
+    <Page.TopAppBar>
+        <CommandBar>
+            <CommandBar.Content>
+                <AppBarButton Name="home" Icon="Home" Label="Home"/>
+            </CommandBar.Content>
+            <AppBarButton Name="share" Icon="World" Label="Share"/>
+            <AppBarButton Name="settings" Icon="Setting" Label="Settings"/>
+        </CommandBar>
+    </Page.TopAppBar>
     <ListView ItemsSource="{Binding Articles}" 
               Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
               x:Name="ArticlesListView"
@@ -22,7 +30,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="125"/>
                     </Grid.RowDefinitions>
-                    
+
                     <Image Grid.Row="0" 
                            Grid.Column="0" 
                            Source="{Binding Image}" 

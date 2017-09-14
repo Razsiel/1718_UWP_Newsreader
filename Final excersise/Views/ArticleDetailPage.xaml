@@ -74,13 +74,16 @@
                            Margin="0, 0, 0, 5"/>
                 <TextBlock Text="{Binding Article.Summary}"
                            TextWrapping="Wrap" />
-                <Button Foreground="DimGray"
+                <Button x:Uid="message.readMore"
+                        Content="Lees meer"
+                        Foreground="DimGray"
                         Margin="0, 20, 0, 20"
                         Command="{Binding ToArticleCommand}"
-                        CommandParameter="{Binding Article.Url}">Lees meer</Button>
+                        CommandParameter="{Binding Article.Url}" />
 
-                <!-- RELATED URIS -->
-                <TextBlock Text="Gerelateerd:"/>
+                    <!-- RELATED URIS -->
+                <TextBlock x:Uid="message.articlesRelated" 
+                           Text="Gerelateerd:"/>
                 <ListView ItemsSource="{Binding Article.Related}"
                           x:Name="RelatedUris"
                           IsItemClickEnabled="True"
