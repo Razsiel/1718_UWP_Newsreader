@@ -95,9 +95,18 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\IconButton.xaml.cs">
+      <DependentUpon>IconButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SignInContentDialog.xaml.cs">
+      <DependentUpon>SignInContentDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\Article.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Feed.cs" />
+    <Compile Include="Services\AuthenticationService.cs" />
+    <Compile Include="Services\Results\LoginResult.cs" />
+    <Compile Include="Services\Results\RegisterResult.cs" />
     <Compile Include="ViewModels\Settings.cs" />
     <Compile Include="Services\ArticleService.cs" />
     <Compile Include="Services\FeedService.cs" />
@@ -106,6 +115,7 @@
     <Compile Include="Services\ServiceBase.cs" />
     <Compile Include="ViewModels\ArticleDetailViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\SignInViewModel.cs" />
     <Compile Include="Views\ArticleDetailPage.xaml.cs">
       <DependentUpon>ArticleDetailPage.xaml</DependentUpon>
     </Compile>
@@ -137,6 +147,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\IconButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SignInContentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ArticleDetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

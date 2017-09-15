@@ -5,6 +5,7 @@
     xmlns:local="using:Final_excersise.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:Final_excersise.Models"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -53,38 +54,39 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Image Source="{Binding Article.Image}" 
+        <Image Source="{x:Bind VM.Article.Image}" 
                Stretch="UniformToFill" 
                Grid.Column="0"
                Grid.Row="0"
                x:Name="Image" >
         </Image>
+        
         <ScrollViewer Grid.Column="1" 
                       Grid.Row="0"
                       Padding="20"
                       x:Name="Content">
             <StackPanel>
                 <!-- INFO -->
-                <TextBlock Text="{Binding Article.PublishDate}"
+                <TextBlock Text="{x:Bind VM.Article.PublishDate}"
                            FontSize="12"
                            Foreground="DimGray"/>
-                <TextBlock Text="{Binding Article.Title}"
+                <TextBlock Text="{x:Bind VM.Article.Title}"
                            FontWeight="Bold"
                            TextWrapping="Wrap" 
                            Margin="0, 0, 0, 5"/>
-                <TextBlock Text="{Binding Article.Summary}"
+                <TextBlock Text="{x:Bind VM.Article.Summary}"
                            TextWrapping="Wrap" />
                 <Button x:Uid="message.readMore"
                         Content="Lees meer"
                         Foreground="DimGray"
                         Margin="0, 20, 0, 20"
-                        Command="{Binding ToArticleCommand}"
-                        CommandParameter="{Binding Article.Url}" />
+                        Command="{x:Bind VM.ToArticleCommand}"
+                        CommandParameter="{x:Bind VM.Article.Url}" />
 
                     <!-- RELATED URIS -->
                 <TextBlock x:Uid="message.articlesRelated" 
                            Text="Gerelateerd:"/>
-                <ListView ItemsSource="{Binding Article.Related}"
+                <ListView ItemsSource="{x:Bind VM.Article.Related}"
                           x:Name="RelatedUris"
                           IsItemClickEnabled="True"
                           ItemClick="RelatedUris_OnItemClick">
@@ -104,7 +106,7 @@
                 </ListView>
 
                 <!-- RELATED CATEGORIES -->
-                <ItemsControl ItemsSource="{Binding Article.Categories}"
+                <ItemsControl ItemsSource="{x:Bind VM.Article.Categories}"
                               x:Name="RelatedCategories">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -113,7 +115,7 @@
                     </ItemsControl.ItemsPanel>
 
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="models:Category">
                             <Button Content="{Binding Name}" 
                                     Margin="0, 10, 10, 10"
                                     Foreground="DimGray"/>

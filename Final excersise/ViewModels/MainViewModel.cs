@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Final_excersise.Controls;
 using Final_excersise.Models;
 using Final_excersise.Services;
 using Final_excersise.Views;
@@ -20,20 +21,28 @@ namespace Final_excersise.ViewModels
 
         private int _nextId = -1;
         private readonly IArticleService _articleService;
+        private readonly IAuthenticationService _authenticationService;
 
         private MainViewModel()
         {
             _articleService = ArticleService.SingleInstance;
+            _authenticationService = AuthenticationService.SingleInstance;
+
             Articles = new ObservableIncrementalLoadingCollection<Article>();
             Articles.LoadMoreItemsEvent += ArticlesOnLoadMoreItemsEvent;
 
             ArticleClickCommand = new RelayCommand(OnArticleClick);
+
+            LogInCommand = new RelayCommand(OnLogin);
+            RegisterCommand = new RelayCommand(OnRegister);
         }
 
         public ObservableIncrementalLoadingCollection<Article> Articles { get; set; }
         public Settings Settings { get; set; }
 
         public RelayCommand ArticleClickCommand { get; }
+        public RelayCommand LogInCommand { get; set; }
+        public RelayCommand RegisterCommand { get; set; }
 
         private List<Article> ArticlesOnLoadMoreItemsEvent(uint count)
         {
@@ -73,6 +82,24 @@ namespace Final_excersise.ViewModels
             if (article == null) return;
 
             ((Frame) Window.Current.Content).Navigate(typeof(ArticleDetailPage), article);
+        }
+        
+        private async void OnLogin(object obj)
+        {
+            // show dialog here
+            var dialog = new SignInContentDialog();
+            await dialog.ShowAsync();
+
+            if (dialog.Result == SignInResult.SignInOK)
+            {
+                
+            }
+        }
+
+        private void OnRegister(object obj)
+        {
+            // show dialog here
+            //_authenticationService.Register();
         }
     }
 }

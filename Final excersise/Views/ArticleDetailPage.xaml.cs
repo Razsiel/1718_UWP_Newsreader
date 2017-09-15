@@ -27,7 +27,10 @@ namespace Final_excersise.Views
         public ArticleDetailPage()
         {
             this.InitializeComponent();
+            DataContext = this;
         }
+
+        private ArticleDetailViewModel VM = new ArticleDetailViewModel();
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -36,7 +39,7 @@ namespace Final_excersise.Views
             var article = e.Parameter as Article;
             if (article == null) return;
 
-            DataContext = new ArticleDetailViewModel
+            VM = new ArticleDetailViewModel
             {
                 Article = article
             };
