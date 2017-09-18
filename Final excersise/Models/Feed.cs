@@ -8,5 +8,7 @@ namespace Final_excersise.Models
 {
     public class Feed
     {
+        public string Id { get; set; }
+        public string Name { get; set; }
     }
 }

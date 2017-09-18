@@ -19,7 +19,7 @@ namespace Final_excersise.Views
 
         private void ArticlesListView_OnItemClick(object sender, ItemClickEventArgs e)
         {
-            (DataContext as MainViewModel)?.ArticleClickCommand.Execute(e.ClickedItem);
+            VM.ArticleClickCommand.Execute(e.ClickedItem);
         }
 
         private void HamburgerButton_OnClick(object sender, RoutedEventArgs e)

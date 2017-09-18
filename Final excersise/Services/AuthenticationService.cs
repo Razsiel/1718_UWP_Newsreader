@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Final_excersise.Services.Results;
@@ -21,15 +22,24 @@ namespace Final_excersise.Services
         public async Task<bool> Login(string userName, string password)
         {
             var uri = $"{ServiceUri}/login";
-            var result = await GetJsonResultAsync<LoginResult>(uri);
-            Windows.Storage.ApplicationDataContainer roamingSettings = Windows.Storage.ApplicationData.Current.RoamingSettings;
+            var parameters = new Dictionary<string, string>();
+            parameters.Add("UserName", userName);
+            parameters.Add("Password", password);
+            var result = await GetJsonResultAsync<LoginResult>(uri, HttpMethod.Post, parameters);
             // Check to see if we got an authentication code back
             var succes = !string.IsNullOrWhiteSpace(result.AuthToken);
             if (succes)
             {
+                Windows.Storage.ApplicationDataContainer roamingSettings = Windows.Storage.ApplicationData.Current.RoamingSettings;
                 roamingSettings.Values["authToken"] = result.AuthToken;
             }
             return succes;
+        }
+
+        public void LogOut()
+        {
+            Windows.Storage.ApplicationDataContainer roamingSettings = Windows.Storage.ApplicationData.Current.RoamingSettings;
+            roamingSettings.Values["authToken"] = null;
         }
 
         public void Register()
@@ -41,6 +51,7 @@ namespace Final_excersise.Services
     public interface IAuthenticationService
     {
         Task<bool> Login(string userName, string password);
+        void LogOut();
         void Register();
     }
 }

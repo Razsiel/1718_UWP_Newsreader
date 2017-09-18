@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Final_excersise.Controls;
@@ -15,7 +16,7 @@ using Library.Command;
 
 namespace Final_excersise.ViewModels
 {
-    public class MainViewModel
+    public class MainViewModel : BaseViewModel
     {
         public static MainViewModel SingleInstance { get; } = new MainViewModel();
 
@@ -34,14 +35,15 @@ namespace Final_excersise.ViewModels
             ArticleClickCommand = new RelayCommand(OnArticleClick);
 
             LogInCommand = new RelayCommand(OnLogin);
+            LogOutCommand = new RelayCommand(OnLogout);
             RegisterCommand = new RelayCommand(OnRegister);
         }
 
         public ObservableIncrementalLoadingCollection<Article> Articles { get; set; }
-        public Settings Settings { get; set; }
 
         public RelayCommand ArticleClickCommand { get; }
         public RelayCommand LogInCommand { get; set; }
+        public RelayCommand LogOutCommand { get; set; }
         public RelayCommand RegisterCommand { get; set; }
 
         private List<Article> ArticlesOnLoadMoreItemsEvent(uint count)
@@ -69,7 +71,6 @@ namespace Final_excersise.ViewModels
                     {
                         list.Add(article);
                     }
-                    
                 }
             }
             
@@ -92,8 +93,13 @@ namespace Final_excersise.ViewModels
 
             if (dialog.Result == SignInResult.SignInOK)
             {
-                
+                var message = new MessageDialog(Settings.GetAuthToken());
             }
+        }
+
+        private void OnLogout(object o)
+        {
+            _authenticationService.LogOut();
         }
 
         private void OnRegister(object obj)

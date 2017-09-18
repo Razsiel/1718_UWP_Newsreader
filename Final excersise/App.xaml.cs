@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Final_excersise.Models;
 
 namespace Final_excersise
 {
@@ -38,7 +39,7 @@ namespace Final_excersise
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -64,6 +65,8 @@ namespace Final_excersise
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
+
+            //await Settings.SingleInstance.Init();
 
             if (e.PrelaunchActivated == false)
             {

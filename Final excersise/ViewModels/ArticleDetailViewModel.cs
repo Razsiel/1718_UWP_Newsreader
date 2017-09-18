@@ -8,7 +8,7 @@ using Library.Command;
 
 namespace Final_excersise.ViewModels
 {
-    public class ArticleDetailViewModel
+    public class ArticleDetailViewModel : BaseViewModel
     {
         public ArticleDetailViewModel()
         {

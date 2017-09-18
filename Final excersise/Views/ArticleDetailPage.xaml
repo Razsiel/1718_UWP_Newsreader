@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:Final_excersise.Models"
+    xmlns:controls="using:Final_excersise.Controls"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -21,8 +22,8 @@
                         <Setter Target="MainGrid.ColumnDefinitions[1].Width" Value="45*"/>
                         <Setter Target="MainGrid.RowDefinitions[0].Height" Value="*"/>
                         <Setter Target="MainGrid.RowDefinitions[1].Height" Value="0"/>
-                        <Setter Target="Image.(Grid.Column)" Value="0"/>
-                        <Setter Target="Image.(Grid.Row)" Value="0"/>
+                        <Setter Target="ImageGrid.(Grid.Column)" Value="0"/>
+                        <Setter Target="ImageGrid.(Grid.Row)" Value="0"/>
                         <Setter Target="Content.(Grid.Column)" Value="1"/>
                         <Setter Target="Content.(Grid.Row)" Value="0"/>
                     </VisualState.Setters>
@@ -36,8 +37,8 @@
                         <Setter Target="MainGrid.ColumnDefinitions[1].Width" Value="0"/>
                         <Setter Target="MainGrid.RowDefinitions[0].Height" Value="35*"/>
                         <Setter Target="MainGrid.RowDefinitions[1].Height" Value="65*"/>
-                        <Setter Target="Image.(Grid.Column)" Value="0"/>
-                        <Setter Target="Image.(Grid.Row)" Value="0"/>
+                        <Setter Target="ImageGrid.(Grid.Column)" Value="0"/>
+                        <Setter Target="ImageGrid.(Grid.Row)" Value="0"/>
                         <Setter Target="Content.(Grid.Column)" Value="0"/>
                         <Setter Target="Content.(Grid.Row)" Value="1"/>
                     </VisualState.Setters>
@@ -54,12 +55,23 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Image Source="{x:Bind VM.Article.Image}" 
-               Stretch="UniformToFill" 
-               Grid.Column="0"
-               Grid.Row="0"
-               x:Name="Image" >
-        </Image>
+        <Grid Grid.Column="0"
+              Grid.Row="0"
+              x:Name="ImageGrid">
+            <Image Source="{x:Bind VM.Article.Image}" 
+                   Stretch="UniformToFill" 
+                   Grid.Column="0"
+                   Grid.Row="0"
+                   x:Name="Image" >
+            </Image>
+            <controls:IconButton Text="Like"
+                                 Symbol="Like"
+                                 VerticalAlignment="Bottom"
+                                 HorizontalAlignment="Right"
+                                 Margin="10"
+                                 Visibility="{x:Bind VM.Settings.IsLoggedIn, Mode=OneTime}"/>
+        </Grid>
+        
         
         <ScrollViewer Grid.Column="1" 
                       Grid.Row="0"
