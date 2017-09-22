@@ -5,6 +5,8 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Security.Credentials;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -30,18 +32,30 @@ namespace Final_excersise.Controls
     public sealed partial class SignInContentDialog : ContentDialog
     {
         public SignInResult Result { get; private set; }
+        
+        private SignInViewModel VM => SignInViewModel.SingleInstance;
 
         public SignInContentDialog()
         {
             this.InitializeComponent();
-            this.Opened += SignInContentDialog_Opened;
-            this.Closing += SignInContentDialog_Closing;
+            this.Opened += OnOpened;
+            this.Closing += OnClosing;
             DataContext = this;
         }
 
-        private SignInViewModel VM => SignInViewModel.SingleInstance;
+        void OnOpened(ContentDialog sender, ContentDialogOpenedEventArgs args)
+        {
+            this.Result = SignInResult.Nothing;
 
-        private async void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+            //TODO: If the user has logged in before, get it and populate the user name field.
+        }
+
+        private void OnClosing(ContentDialog sender, ContentDialogClosingEventArgs args)
+        {
+            
+        }
+
+        private async void OnPrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             // Ensure the user name and password fields aren't empty. If a required field
             // is empty, set args.Cancel = true to keep the dialog open.
@@ -59,7 +73,6 @@ namespace Final_excersise.Controls
             // If you're performing async operations in the button click handler,
             // get a deferral before you await the operation. Then, complete the
             // deferral when the async operation is complete.
-
             
             ContentDialogButtonClickDeferral deferral = args.GetDeferral();
             if (await VM.SignInAsync())
@@ -73,81 +86,20 @@ namespace Final_excersise.Controls
             deferral.Complete();
         }
 
-        private void ContentDialog_CloseButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        private void OnCloseButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             // User clicked Cancel, ESC, or the system back button.
             this.Result = SignInResult.SignInCancel;
         }
 
-        void SignInContentDialog_Opened(ContentDialog sender, ContentDialogOpenedEventArgs args)
-        {
-            this.Result = SignInResult.Nothing;
-
-            // If the user name is saved, get it and populate the user name field.
-            Windows.Storage.ApplicationDataContainer roamingSettings = Windows.Storage.ApplicationData.Current.RoamingSettings;
-            if (roamingSettings.Values.ContainsKey("userName"))
-            {
-                VM.UserName = roamingSettings.Values["userName"].ToString();
-            }
-        }
-
-        void SignInContentDialog_Closing(ContentDialog sender, ContentDialogClosingEventArgs args)
-        {
-            // If sign in was successful, save or clear the user name based on the user choice.
-            if (this.Result == SignInResult.SignInOK)
-            {
-                if (VM.IsSaveUserName)
-                {
-                    SaveUserName();
-                }
-                else
-                {
-                    ClearUserName();
-                }
-            }
-
-            // If the user entered a name and checked or cleared the 'save user name' checkbox, then clicked the back arrow,
-            // confirm if it was their intention to save or clear the user name without signing in.
-            if (this.Result == SignInResult.Nothing && !string.IsNullOrEmpty(UserNameTextBox.Text))
-            {
-                if (!VM.IsSaveUserName)
-                {
-                    args.Cancel = true;
-                    FlyoutBase.SetAttachedFlyout(this, (FlyoutBase)this.Resources["DiscardNameFlyout"]);
-                    FlyoutBase.ShowAttachedFlyout(this);
-                }
-                else if (VM.IsSaveUserName == true && !string.IsNullOrEmpty(VM.UserName))
-                {
-                    args.Cancel = true;
-                    FlyoutBase.SetAttachedFlyout(this, (FlyoutBase)this.Resources["SaveNameFlyout"]);
-                    FlyoutBase.ShowAttachedFlyout(this);
-                }
-            }
-        }
-
-        private void SaveUserName()
-        {
-            Windows.Storage.ApplicationDataContainer roamingSettings = Windows.Storage.ApplicationData.Current.RoamingSettings;
-            roamingSettings.Values["userName"] = VM.UserName;
-        }
-
-        private void ClearUserName()
-        {
-            Windows.Storage.ApplicationDataContainer roamingSettings = Windows.Storage.ApplicationData.Current.RoamingSettings;
-            roamingSettings.Values["userName"] = null;
-            VM.UserName = string.Empty;
-        }
-
         // Handle the button clicks from the flyouts.
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            SaveUserName();
             FlyoutBase.GetAttachedFlyout(this).Hide();
         }
 
         private void DiscardButton_Click(object sender, RoutedEventArgs e)
         {
-            ClearUserName();
             FlyoutBase.GetAttachedFlyout(this).Hide();
         }
 

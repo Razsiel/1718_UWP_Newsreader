@@ -65,8 +65,8 @@
                             <controls:IconButton Text="Log In" Symbol="Contact" Command="{x:Bind VM.LogInCommand}"/>
                             <controls:IconButton Text="Register" Symbol="AddFriend" Margin="10, 0"/>
                         </StackPanel>
-                        <StackPanel  Visibility="{x:Bind VM.Settings.IsLoggedIn, Mode=OneWay}">
-                            <TextBlock Text="Hallo x"/>
+                        <StackPanel Visibility="{x:Bind VM.Settings.IsLoggedIn, Mode=OneWay}">
+                            <TextBlock Text="{x:Bind VM.Settings.Username}"/>
                             <controls:IconButton Text="Log out" Symbol="Home" Command="{x:Bind VM.LogOutCommand}"/>
                         </StackPanel>
                     </StackPanel>

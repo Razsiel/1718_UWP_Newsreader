@@ -11,8 +11,8 @@
     Title="SIGN IN"
     PrimaryButtonText="Sign In"  
     CloseButtonText="Cancel"
-    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
-    CloseButtonClick="ContentDialog_CloseButtonClick">
+    PrimaryButtonClick="OnPrimaryButtonClick"
+    CloseButtonClick="OnCloseButtonClick">
 
     <ContentDialog.Resources>
         <!-- These flyouts or used for confirmation when the user changes
@@ -34,7 +34,7 @@
     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <TextBox Name="UserNameTextBox" Header="User name" Text="{x:Bind VM.UserName, Mode=TwoWay}"/>
         <PasswordBox Name="PasswordTextBox" Header="Password" Password="{x:Bind VM.Password, Mode=TwoWay}" IsPasswordRevealButtonEnabled="True"/>
-        <CheckBox Name="SaveUserNameCheckBox" Content="Save user name" IsChecked="{x:Bind VM.IsSaveUserName, Mode=TwoWay}"/>
+        <!--<CheckBox Name="SaveUserNameCheckBox" Content="Save user name" IsChecked="{x:Bind VM.IsSaveUserName, Mode=TwoWay}"/>-->
 
         <TextBlock x:Name="ErrorTextBlock"/>
 

@@ -35,7 +35,7 @@ namespace Final_excersise.ViewModels
             ArticleClickCommand = new RelayCommand(OnArticleClick);
 
             LogInCommand = new RelayCommand(OnLogin);
-            LogOutCommand = new RelayCommand(OnLogout);
+            LogOutCommand = new RelayCommand(OnLogoutAsync);
             RegisterCommand = new RelayCommand(OnRegister);
         }
 
@@ -93,13 +93,31 @@ namespace Final_excersise.ViewModels
 
             if (dialog.Result == SignInResult.SignInOK)
             {
-                var message = new MessageDialog(Settings.GetAuthToken());
+                var message = new MessageDialog($"Welcome {Settings.Username}!");
+                await message.ShowAsync();
+                ((Frame)Window.Current.Content).Navigate(typeof(MainPage));
             }
         }
 
-        private void OnLogout(object o)
+        private async void OnLogoutAsync(object o)
         {
-            _authenticationService.LogOut();
+            var dialog = new MessageDialog("Are you sure you want to log out?");
+            // Yes button
+            dialog.Commands.Add(new UICommand("Yes", command =>
+            {
+                _authenticationService.LogOut();
+                ((Frame)Window.Current.Content).Navigate(typeof(MainPage));
+            }));
+            dialog.DefaultCommandIndex = 0;
+
+            // No button
+            dialog.Commands.Add(new UICommand("No", command =>
+            {
+                // do nothing
+            }));
+            dialog.CancelCommandIndex = (uint) (dialog.Commands.Count - 1);
+
+            await dialog.ShowAsync();
         }
 
         private void OnRegister(object obj)

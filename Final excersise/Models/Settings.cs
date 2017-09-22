@@ -20,28 +20,21 @@ namespace Final_excersise.Models
 
         public List<Feed> Feeds { get; set; }
 
+        public string AuthToken { get; set; }
+
+        public string Username { get; set; }
+
         public async Task Init()
         {
             Feeds = await _feedService.GetFeeds();
         }
 
-        public bool IsLoggedIn 
+        public bool IsLoggedIn
         {
             get
             {
-                var roaming = Windows.Storage.ApplicationData.Current.RoamingSettings;
-                return roaming.Values.ContainsKey("authToken");
-            } 
-        }
-
-        public string GetAuthToken()
-        {
-            if (IsLoggedIn)
-            {
-                var roaming = Windows.Storage.ApplicationData.Current.RoamingSettings;
-                return roaming.Values["authToken"].ToString();
+                return !string.IsNullOrWhiteSpace(AuthToken);
             }
-            return "";
-        }
+        } 
     }
 }
