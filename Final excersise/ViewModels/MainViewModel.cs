@@ -24,7 +24,7 @@ namespace Final_excersise.ViewModels
         private readonly IArticleService _articleService;
         private readonly IAuthenticationService _authenticationService;
 
-        public ObservableIncrementalLoadingCollection<Article> Articles { get; set; }
+        public ObservableIncrementalLoadingCollection<ArticleListViewModel> Articles { get; set; }
         public RelayCommand ArticleClickCommand { get; }
         public RelayCommand LogInCommand { get; set; }
         public RelayCommand LogOutCommand { get; set; }
@@ -35,7 +35,7 @@ namespace Final_excersise.ViewModels
             _articleService = ArticleService.SingleInstance;
             _authenticationService = AuthenticationService.SingleInstance;
 
-            Articles = new ObservableIncrementalLoadingCollection<Article>();
+            Articles = new ObservableIncrementalLoadingCollection<ArticleListViewModel>();
             Articles.LoadMoreItemsEvent += ArticlesOnLoadMoreItemsEvent;
 
             ArticleClickCommand = new RelayCommand(OnArticleClick);
@@ -44,9 +44,9 @@ namespace Final_excersise.ViewModels
             RegisterCommand = new RelayCommand(OnRegister);
         }
 
-        private List<Article> ArticlesOnLoadMoreItemsEvent(uint count)
+        private List<ArticleListViewModel> ArticlesOnLoadMoreItemsEvent(uint count)
         {
-            var list = new List<Article>();
+            var list = new List<ArticleListViewModel>();
             // On initial load get the first 20 articles
             if (_nextId < 0)
             {
@@ -54,7 +54,7 @@ namespace Final_excersise.ViewModels
                 _nextId = articlesResult.NextId;
                 foreach (var article in articlesResult.Results)
                 {
-                    list.Add(article);
+                    list.Add(new ArticleListViewModel(article));
                 }
             }
             else
@@ -65,7 +65,7 @@ namespace Final_excersise.ViewModels
                     var article = articleResult.Results.FirstOrDefault(); // collection will always contain 1 element with this api call. Hence the 'FirstOrDefault' call.
                     if (article != null)
                     {
-                        list.Add(article);
+                        list.Add(new ArticleListViewModel(article));
                         //Prep the method for next time the api call is done.
                         _nextId = articleResult.NextId;
                     }
@@ -78,11 +78,11 @@ namespace Final_excersise.ViewModels
         public void OnArticleClick(object o)
         {
             // Cast the clicked object to the viewmodel underlying it
-            var article = o as Article;
-            if (article == null) return;
+            var articleListViewModel = o as ArticleListViewModel;
+            if (articleListViewModel?.Article == null) return;
 
             // Navigate to the detail page of the clicked article
-            ((Frame) Window.Current.Content).Navigate(typeof(ArticleDetailPage), article);
+            ((Frame) Window.Current.Content).Navigate(typeof(ArticleDetailPage), articleListViewModel.Article);
         }
         
         private async void OnLogin(object obj)

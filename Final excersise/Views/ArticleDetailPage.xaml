@@ -43,6 +43,14 @@
                         <Setter Target="Content.(Grid.Row)" Value="1"/>
                     </VisualState.Setters>
                 </VisualState>
+                <VisualState x:Name="Favorite">
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{x:Bind VM.Article.IsLiked}"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="IconButton.Text" Value="Test"></Setter>
+                    </VisualState.Setters>
+                </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         
@@ -69,7 +77,8 @@
                                  VerticalAlignment="Bottom"
                                  HorizontalAlignment="Right"
                                  Margin="10"
-                                 Visibility="{x:Bind VM.Settings.IsLoggedIn, Mode=OneTime}"/>
+                                 Visibility="{x:Bind VM.Settings.IsLoggedIn, Mode=OneTime}"
+                                 Command="{x:Bind VM.FavoriteCommand}"/>
         </Grid>
         
         

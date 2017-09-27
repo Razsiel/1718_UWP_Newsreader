@@ -140,7 +140,7 @@
                                         <SymbolIcon Symbol="Favorite"
                                                     Foreground="Yellow"
                                                     VerticalAlignment="Top"
-                                                    HorizontalAlignment="Left"
+                                                    HorizontalAlignment="Right"
                                                     Visibility="{x:Bind Article.IsLiked}"
                                                     Margin="10"/>
                                     </Grid>
