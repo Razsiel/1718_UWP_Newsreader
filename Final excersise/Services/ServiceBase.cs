@@ -33,7 +33,7 @@ namespace Final_excersise.Services
         /// <param name="httpMethod">The HttpMethod. Default: GET</param>
         /// <param name="parameters">Any uri paramters</param>
         /// <returns></returns>
-        protected async Task<T> GetJsonResultAsync<T>(string uri, HttpMethod httpMethod = null, Dictionary<string, string> parameters = null)
+        protected async Task<T> GetJsonResultAsync<T>(string uri, HttpMethod httpMethod = null, Dictionary<string, string> parameters = null, string xauthtoken = null)
         {
             if (httpMethod == null) httpMethod = HttpMethod.Get;
             using (var client = new HttpClient())
@@ -47,6 +47,10 @@ namespace Final_excersise.Services
                         using (var request = new HttpRequestMessage(httpMethod, uri))
                         {
                             request.Content = content;
+                            if (!string.IsNullOrWhiteSpace(xauthtoken))
+                            {
+                                request.Headers.Add("x-authtoken", xauthtoken);
+                            }
 
                             using (var response = await client.SendAsync(request))
                             {
@@ -59,7 +63,7 @@ namespace Final_excersise.Services
                 }
                 catch (Exception e)
                 {
-                    var messageDialog = new MessageDialog($"Something went wrong: \n {e.Message}");
+                    var messageDialog = new MessageDialog($"Something went wrong whilst trying to convert JSON to {typeof(T).FullName}: \n {e.Message}");
                     Console.WriteLine(e);
                     await messageDialog.ShowAsync();
                     return default(T);

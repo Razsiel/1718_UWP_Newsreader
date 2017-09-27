@@ -22,8 +22,8 @@ namespace Final_excersise.Services
         public async Task<List<Feed>> GetFeeds()
         {
             var uri = ServiceUri;
-            var response = await GetJsonResultAsync<FeedResult>(uri);
-            return response.Feeds;
+            var response = await GetJsonResultAsync<List<Feed>>(uri);
+            return response;
         }
     }
 

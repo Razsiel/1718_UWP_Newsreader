@@ -24,6 +24,12 @@ namespace Final_excersise.ViewModels
         private readonly IArticleService _articleService;
         private readonly IAuthenticationService _authenticationService;
 
+        public ObservableIncrementalLoadingCollection<Article> Articles { get; set; }
+        public RelayCommand ArticleClickCommand { get; }
+        public RelayCommand LogInCommand { get; set; }
+        public RelayCommand LogOutCommand { get; set; }
+        public RelayCommand RegisterCommand { get; set; }
+
         private MainViewModel()
         {
             _articleService = ArticleService.SingleInstance;
@@ -33,18 +39,10 @@ namespace Final_excersise.ViewModels
             Articles.LoadMoreItemsEvent += ArticlesOnLoadMoreItemsEvent;
 
             ArticleClickCommand = new RelayCommand(OnArticleClick);
-
             LogInCommand = new RelayCommand(OnLogin);
             LogOutCommand = new RelayCommand(OnLogoutAsync);
             RegisterCommand = new RelayCommand(OnRegister);
         }
-
-        public ObservableIncrementalLoadingCollection<Article> Articles { get; set; }
-
-        public RelayCommand ArticleClickCommand { get; }
-        public RelayCommand LogInCommand { get; set; }
-        public RelayCommand LogOutCommand { get; set; }
-        public RelayCommand RegisterCommand { get; set; }
 
         private List<Article> ArticlesOnLoadMoreItemsEvent(uint count)
         {
@@ -61,15 +59,15 @@ namespace Final_excersise.ViewModels
             }
             else
             {
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < 20; i++) //replace '20' with 'count' to allow load-by-demand
                 {
                     var articleResult = _articleService.GetArticleAsync((uint)_nextId).Result;
-                    _nextId = articleResult.NextId;
-
-                    var article = articleResult.Results.FirstOrDefault();
+                    var article = articleResult.Results.FirstOrDefault(); // collection will always contain 1 element with this api call. Hence the 'FirstOrDefault' call.
                     if (article != null)
                     {
                         list.Add(article);
+                        //Prep the method for next time the api call is done.
+                        _nextId = articleResult.NextId;
                     }
                 }
             }
@@ -79,18 +77,21 @@ namespace Final_excersise.ViewModels
 
         public void OnArticleClick(object o)
         {
+            // Cast the clicked object to the viewmodel underlying it
             var article = o as Article;
             if (article == null) return;
 
+            // Navigate to the detail page of the clicked article
             ((Frame) Window.Current.Content).Navigate(typeof(ArticleDetailPage), article);
         }
         
         private async void OnLogin(object obj)
         {
-            // show dialog here
+            // show login dialog (handles the logging in and backend calls)
             var dialog = new SignInContentDialog();
             await dialog.ShowAsync();
 
+            // If login was succesful -> show welcome message and refresh the page
             if (dialog.Result == SignInResult.SignInOK)
             {
                 var message = new MessageDialog($"Welcome {Settings.Username}!");

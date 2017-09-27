@@ -33,11 +33,19 @@ namespace Final_excersise.Services
             var result = await base.GetJsonResultAsync<ArticlesResult>(uri);
             return result;
         }
+
+        public async Task<bool> PutArticle(uint id)
+        {
+            var uri = $"{ServiceUri}/{id}/like";
+            await base.GetJsonResultAsync<object>(uri, HttpMethod.Put, null, Settings.SingleInstance.AuthToken);
+            return true;
+        }
     }
 
     public interface IArticleService
     {
         Task<ArticlesResult> GetArticles();
         Task<ArticlesResult> GetArticleAsync(uint id);
+        Task<bool> PutArticle(uint id);
     }
 }
