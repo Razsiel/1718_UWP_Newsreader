@@ -23,21 +23,21 @@ namespace Final_excersise.Services
         public async Task<ArticlesResult> GetArticles()
         {
             var uri = ServiceUri;
-            var result = await base.GetJsonResultAsync<ArticlesResult>(uri);
+            var result = await base.GetJsonResultAsync<ArticlesResult>(uri, xauthtoken: Settings.SingleInstance.AuthToken);
             return result;
         }
 
         public async Task<ArticlesResult> GetArticleAsync(uint id)
         {
             var uri = $"{ServiceUri}/{id}";
-            var result = await base.GetJsonResultAsync<ArticlesResult>(uri);
+            var result = await base.GetJsonResultAsync<ArticlesResult>(uri, xauthtoken: Settings.SingleInstance.AuthToken);
             return result;
         }
 
         public async Task<bool> PutArticle(uint id)
         {
             var uri = $"{ServiceUri}/{id}/like";
-            await base.GetJsonResultAsync<object>(uri, HttpMethod.Put, null, Settings.SingleInstance.AuthToken);
+            await base.GetJsonResultAsync<object>(uri, HttpMethod.Put, xauthtoken: Settings.SingleInstance.AuthToken);
             return true;
         }
     }

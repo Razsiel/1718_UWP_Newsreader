@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     d:DesignHeight="50">
 
-    <Button Command="{x:Bind Command}">
+    <Button Command="{x:Bind Command}" CommandParameter="{x:Bind CommandParameter}">
         <Button.Content>
             <StackPanel Orientation="Horizontal">
                 <SymbolIcon Symbol="{x:Bind Symbol, Mode=OneWay}" />

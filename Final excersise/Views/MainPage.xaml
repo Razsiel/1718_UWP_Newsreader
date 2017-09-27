@@ -8,7 +8,6 @@
     xmlns:models="using:Final_excersise.Models"
     xmlns:controls="using:Final_excersise.Controls"
     xmlns:viewModels="using:Final_excersise.ViewModels"
-    xmlns:windowsStateTriggers="using:WindowsStateTriggers"
     mc:Ignorable="d">
 
     <SplitView x:Name="MainSplitView"
@@ -64,9 +63,9 @@
                             <controls:IconButton Text="Log In" 
                                                  Symbol="Contact" 
                                                  Command="{x:Bind VM.LogInCommand}"/>
-                            <controls:IconButton Text="Register" 
+                            <!--<controls:IconButton Text="Register" 
                                                  Symbol="AddFriend" 
-                                                 Margin="10, 0"/>
+                                                 Margin="10, 0"/>-->
                         </StackPanel>
                         <StackPanel Visibility="{x:Bind VM.Settings.IsLoggedIn, Mode=OneWay}"
                                     VerticalAlignment="Bottom">
@@ -130,29 +129,25 @@
                                           Grid.Column="0">
                                     <Image Source="{x:Bind Article.Image}"
                                                Stretch="UniformToFill" />
-                                    <Grid Visibility="{Binding Settings.IsLoggedIn}">
-                                        <SymbolIcon Symbol="Favorite"
-                                                    Foreground="White"
-                                                    VerticalAlignment="Top"
-                                                    HorizontalAlignment="Right"
-                                                    Visibility="{x:Bind Article.IsLiked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
-                                                    Margin="10"/>
-                                        <SymbolIcon Symbol="Favorite"
-                                                    Foreground="Yellow"
-                                                    VerticalAlignment="Top"
-                                                    HorizontalAlignment="Right"
-                                                    Visibility="{x:Bind Article.IsLiked}"
-                                                    Margin="10"/>
-                                    </Grid>
-                                    
+
                                 </Grid>
 
                                 <StackPanel Grid.Row="0" 
                                                 Grid.Column="1"
                                                 Padding="20, 0, 10, 0"
                                                 DataContext="{x:Bind }">
-                                    <TextBlock Text="{x:Bind Article.Title}" 
+                                    <StackPanel Orientation="Horizontal"
+                                                Margin="0 0 0 10">
+                                        <TextBlock Text="{x:Bind Article.Title}" 
                                                    FontWeight="Bold"/>
+                                        <SymbolIcon Symbol="Favorite"
+                                                    Foreground="Yellow"
+                                                    VerticalAlignment="Top"
+                                                    HorizontalAlignment="Right"
+                                                    Visibility="{x:Bind Article.IsLiked, Mode=OneWay}"
+                                                    Margin="10 0"/>
+                                    </StackPanel>
+                                    
                                     <TextBlock Text="{x:Bind Article.Summary}" 
                                                    TextWrapping="Wrap"
                                                    TextTrimming="CharacterEllipsis"/>

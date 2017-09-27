@@ -96,6 +96,10 @@ namespace Final_excersise.ViewModels
             {
                 var message = new MessageDialog($"Welcome {Settings.Username}!");
                 await message.ShowAsync();
+                // Reload loaded articles before navigating
+                _nextId = -1;
+                Articles.Clear();
+                await Articles.LoadMoreItemsAsync(0);
                 ((Frame)Window.Current.Content).Navigate(typeof(MainPage));
             }
         }

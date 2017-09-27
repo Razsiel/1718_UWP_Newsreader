@@ -24,6 +24,7 @@ namespace Final_excersise.Controls
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(IconButton), new PropertyMetadata(default(string)));
         public static readonly DependencyProperty SymbolProperty = DependencyProperty.Register("Symbol", typeof(string), typeof(IconButton), new PropertyMetadata(default(string)));
         public static readonly DependencyProperty CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(IconButton), new PropertyMetadata(default(ICommand)));
+        public static readonly DependencyProperty CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(IconButton), new PropertyMetadata(default(object)));
 
         public IconButton()
         {
@@ -46,6 +47,12 @@ namespace Final_excersise.Controls
         {
             get { return (ICommand) GetValue(CommandProperty); }
             set { SetValue(CommandProperty, value); }
+        }
+
+        public object CommandParameter
+        {
+            get { return (object) GetValue(CommandParameterProperty); }
+            set { SetValue(CommandParameterProperty, value); }
         }
     }
 }

@@ -65,11 +65,27 @@ namespace Final_excersise.Services
         {
             Debug.WriteLine("register called");
         }
+
+        public async void TryAutoLogin()
+        {
+            var vault = new Windows.Security.Credentials.PasswordVault();
+            var credentials = vault.RetrieveAll();
+            if (credentials.Any())
+            {
+                var user = credentials.FirstOrDefault();
+                if (user != null)
+                {
+                    user.RetrievePassword();
+                    Login(user.UserName, user.Password);
+                }
+            }
+        }
     }
 
     public interface IAuthenticationService
     {
         Task<bool> Login(string username, string password);
+        void TryAutoLogin();
         void LogOut();
         void Register();
     }

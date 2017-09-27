@@ -1,6 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 using Final_excersise.ViewModels;
 
 namespace Final_excersise.Views
@@ -14,6 +15,7 @@ namespace Final_excersise.Views
         {
             this.InitializeComponent();
             DataContext = this;
+            NavigationCacheMode = NavigationCacheMode.Required;
         }
 
         private MainViewModel VM => MainViewModel.SingleInstance;

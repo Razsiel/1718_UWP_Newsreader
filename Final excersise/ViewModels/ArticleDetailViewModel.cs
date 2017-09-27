@@ -37,7 +37,14 @@ namespace Final_excersise.ViewModels
         {
             var article = obj as Article;
             if (article == null) return;
+
+            // Update server article
             await _articleService.PutArticle((uint)article.Id);
+
+            // Update local article from server
+            var result = await _articleService.GetArticleAsync((uint) Article.Id);
+            var serverArticle = result.Results.FirstOrDefault();
+            if (serverArticle != null) Article.IsLiked = serverArticle.IsLiked;
         }
     }
 }
