@@ -43,8 +43,7 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock x:Uid="settings.feedDescription" 
-                               Text="Toon artikelen uit deze feeds:"
+                    <TextBlock Text="Toon artikelen uit deze feeds:"
                                TextWrapping="Wrap" 
                                Grid.Row="0"/>
                     <ListView ItemsSource="{x:Bind VM.Settings.Feeds, Mode=OneWay}"
@@ -56,10 +55,11 @@
                         </ListView.ItemTemplate>
                     </ListView>
                     <Grid Margin="0 10"
-                                Grid.Row="2">
-                        <StackPanel Orientation="Horizontal"
-                                    Visibility="{x:Bind VM.Settings.IsLoggedIn, Mode=OneWay, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
-                                    VerticalAlignment="Bottom">
+                          Grid.Row="2">
+                        <StackPanel x:Name="LoginPanel" 
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Bottom"
+                                    Visibility="{x:Bind VM.Settings.IsLoggedIn, Mode=OneWay}">
                             <controls:IconButton Text="Log In" 
                                                  Symbol="Contact" 
                                                  Command="{x:Bind VM.LogInCommand}"/>
@@ -67,8 +67,9 @@
                                                  Symbol="AddFriend" 
                                                  Margin="10, 0"/>-->
                         </StackPanel>
-                        <StackPanel Visibility="{x:Bind VM.Settings.IsLoggedIn, Mode=OneWay}"
-                                    VerticalAlignment="Bottom">
+                        <StackPanel x:Name="RegisterPanel"
+                                    VerticalAlignment="Bottom"
+                                    Visibility="{x:Bind VM.Settings.IsLoggedIn, Mode=OneWay, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
                             <TextBlock Text="{x:Bind VM.Settings.Username}"/>
                             <controls:IconButton Text="Log out" 
                                                  Symbol="Home" 
@@ -87,19 +88,35 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <StackPanel Orientation="Horizontal"
-                            Grid.Row="0">
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
                     <Button x:Name="HamburgerButton" 
                             FontFamily="Segoe MDL2 Assets" 
                             Content="&#xE700;"
                             Width="50" 
                             Height="50" 
                             Background="Transparent"
-                            Click="HamburgerButton_OnClick"/>
+                            Click="HamburgerButton_OnClick"
+                            Grid.Column="0"/>
                     <TextBlock Text="Inholland News Reader" 
                                VerticalAlignment="Center"
-                               Margin="10 0"/>
-                </StackPanel>
+                               Margin="10 0"
+                               Grid.Column="1"/>
+                    <Button x:Name="RefreshButton"
+                            FontFamily="Segoe MDL2 Assets" 
+                            Content="&#xE149;"
+                            Width="50"
+                            Height="50"
+                            Background="Transparent"
+                            HorizontalAlignment="Right"
+                            Command="{x:Bind VM.RefreshArticles}"
+                            Grid.Column="2"/>
+                </Grid>
 
                 <ListView ItemsSource="{x:Bind VM.Articles}" 
                           Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -126,16 +143,16 @@
                                 </Grid.RowDefinitions>
 
                                 <Grid Grid.Row="0" 
-                                          Grid.Column="0">
+                                      Grid.Column="0">
                                     <Image Source="{x:Bind Article.Image}"
-                                               Stretch="UniformToFill" />
+                                           Stretch="UniformToFill" />
 
                                 </Grid>
 
                                 <StackPanel Grid.Row="0" 
-                                                Grid.Column="1"
-                                                Padding="20, 0, 10, 0"
-                                                DataContext="{x:Bind }">
+                                            Grid.Column="1"
+                                            Padding="20, 0, 10, 0"
+                                            DataContext="{x:Bind }">
                                     <StackPanel Orientation="Horizontal"
                                                 Margin="0 0 0 10">
                                         <TextBlock Text="{x:Bind Article.Title}" 
@@ -147,10 +164,10 @@
                                                     Visibility="{x:Bind Article.IsLiked, Mode=OneWay}"
                                                     Margin="10 0"/>
                                     </StackPanel>
-                                    
+
                                     <TextBlock Text="{x:Bind Article.Summary}" 
-                                                   TextWrapping="Wrap"
-                                                   TextTrimming="CharacterEllipsis"/>
+                                               TextWrapping="Wrap"
+                                               TextTrimming="CharacterEllipsis"/>
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>

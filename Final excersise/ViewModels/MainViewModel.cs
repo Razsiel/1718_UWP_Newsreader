@@ -26,9 +26,10 @@ namespace Final_excersise.ViewModels
 
         public ObservableIncrementalLoadingCollection<ArticleListViewModel> Articles { get; set; }
         public RelayCommand ArticleClickCommand { get; }
-        public RelayCommand LogInCommand { get; set; }
-        public RelayCommand LogOutCommand { get; set; }
-        public RelayCommand RegisterCommand { get; set; }
+        public RelayCommand LogInCommand { get; }
+        public RelayCommand LogOutCommand { get; }
+        public RelayCommand RegisterCommand { get; }
+        public RelayCommand RefreshArticles { get; }
 
         private MainViewModel()
         {
@@ -42,6 +43,7 @@ namespace Final_excersise.ViewModels
             LogInCommand = new RelayCommand(OnLogin);
             LogOutCommand = new RelayCommand(OnLogoutAsync);
             RegisterCommand = new RelayCommand(OnRegister);
+            RefreshArticles = new RelayCommand(OnRefresh);
         }
 
         private List<ArticleListViewModel> ArticlesOnLoadMoreItemsEvent(uint count)
@@ -96,10 +98,7 @@ namespace Final_excersise.ViewModels
             {
                 var message = new MessageDialog($"Welcome {Settings.Username}!");
                 await message.ShowAsync();
-                // Reload loaded articles before navigating
-                _nextId = -1;
-                Articles.Clear();
-                await Articles.LoadMoreItemsAsync(0);
+                RefreshArticles.Execute(null);
                 ((Frame)Window.Current.Content).Navigate(typeof(MainPage));
             }
         }
@@ -129,6 +128,14 @@ namespace Final_excersise.ViewModels
         {
             // show dialog here
             //_authenticationService.Register();
+        }
+
+        private async void OnRefresh(object obj)
+        {
+            // Reload loaded articles before navigating
+            _nextId = -1;
+            Articles.Clear();
+            await Articles.LoadMoreItemsAsync(0);
         }
     }
 }
