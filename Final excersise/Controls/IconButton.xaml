@@ -7,11 +7,17 @@
                       mc:Ignorable="d"
                       d:DesignHeight="50">
     <Button  
-        Command="{x:Bind Command}" CommandParameter="{x:Bind CommandParameter}">
+        Command="{x:Bind Command}" 
+        CommandParameter="{x:Bind CommandParameter}"
+        Background="{x:Bind Background, Mode=OneWay}">
         <Button.Content>
             <StackPanel Orientation="Horizontal">
-                <SymbolIcon Symbol="{x:Bind Symbol, Mode=OneWay}" Foreground="{x:Bind Foreground}"/>
-                <TextBlock Text="{x:Bind Text, Mode=OneWay}" Margin="10 0" Foreground="{x:Bind Foreground}"/>
+                <SymbolIcon Symbol="{x:Bind Symbol, Mode=OneWay}" 
+                            Foreground="{x:Bind Foreground, Mode=OneWay}"/>
+                <TextBlock Text="{x:Bind Text, Mode=OneWay}" 
+                           Margin="10 0" 
+                           Foreground="{x:Bind Foreground, Mode=OneWay}"
+                           Visibility="{x:Bind Text, Converter={StaticResource StringNullToVisibilityConverter}, Mode=OneWay}"/>
             </StackPanel>
         </Button.Content>
     </Button>

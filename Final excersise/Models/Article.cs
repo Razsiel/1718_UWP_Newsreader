@@ -9,6 +9,8 @@ namespace Final_excersise.Models
 {
     public class Article : BindableBase
     {
+        private bool _isLiked;
+
         public int Id { get; set; }
         public int Feed { get; set; }
         public string Title { get; set; }
@@ -18,6 +20,10 @@ namespace Final_excersise.Models
         public string Url { get; set; }
         public List<string> Related { get; set; }
         public List<Category> Categories { get; set; }
-        public bool IsLiked { get; set; }
+        public bool IsLiked
+        {
+            get { return _isLiked; }
+            set { SetProperty(ref _isLiked, value); }
+        }
     }
 }

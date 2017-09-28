@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -29,6 +30,8 @@ namespace Final_excersise.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility =
+                AppViewBackButtonVisibility.Collapsed;
             MainSplitView.IsPaneOpen = false;
             base.OnNavigatedTo(e);
         }

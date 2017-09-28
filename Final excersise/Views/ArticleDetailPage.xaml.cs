@@ -30,7 +30,7 @@ namespace Final_excersise.Views
             DataContext = this;
         }
 
-        private ArticleDetailViewModel VM = new ArticleDetailViewModel();
+        private ArticleDetailViewModel VM;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -39,10 +39,7 @@ namespace Final_excersise.Views
             var article = e.Parameter as Article;
             if (article == null) return;
 
-            VM = new ArticleDetailViewModel
-            {
-                Article = article
-            };
+            VM = new ArticleDetailViewModel(article);
         }
 
         private void RelatedUris_OnItemClick(object sender, ItemClickEventArgs e)

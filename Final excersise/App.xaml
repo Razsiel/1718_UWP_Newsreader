@@ -9,5 +9,6 @@
     <Application.Resources>
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
         <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        <converters:StringNullToVisibilityConverter x:Key="StringNullToVisibilityConverter" />
     </Application.Resources>
 </Application>

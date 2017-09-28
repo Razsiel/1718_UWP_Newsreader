@@ -47,7 +47,7 @@
             <VisualStateGroup x:Name="FavoriteState">
                 <VisualState x:Name="IsFavorite">
                     <VisualState.StateTriggers>
-                        <StateTrigger IsActive="{x:Bind VM.Article.IsLiked}"/>
+                        <StateTrigger IsActive="{x:Bind VM.Article.IsLiked, Mode=OneWay}"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="FavoriteButton.Symbol" Value="SolidStar"/>
@@ -107,7 +107,7 @@
                         Command="{x:Bind VM.ToArticleCommand}"
                         CommandParameter="{x:Bind VM.Article.Url}" />
 
-                    <!-- RELATED URIS -->
+                <!-- RELATED URIS -->
                 <TextBlock x:Uid="message.articlesRelated" 
                            Text="Gerelateerd:"/>
                 <ListView ItemsSource="{x:Bind VM.Article.Related}"

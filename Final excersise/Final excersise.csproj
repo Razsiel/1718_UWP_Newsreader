@@ -103,13 +103,13 @@
     </Compile>
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Converters\InvertedBooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\StringNullToVisibilityConverter.cs" />
     <Compile Include="Models\Article.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Feed.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Services\Results\LoginResult.cs" />
     <Compile Include="Services\Results\RegisterResult.cs" />
-    <Compile Include="ViewModels\ArticleListViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Services\ArticleService.cs" />

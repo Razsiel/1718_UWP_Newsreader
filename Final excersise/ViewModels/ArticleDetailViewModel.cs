@@ -18,10 +18,11 @@ namespace Final_excersise.ViewModels
         public RelayCommand ToArticleCommand { get; }
         public RelayCommand FavoriteCommand { get; }
 
-        public ArticleDetailViewModel()
+        public ArticleDetailViewModel(Article article)
         {
             _articleService = ArticleService.SingleInstance;
 
+            Article = article;
             ToArticleCommand = new RelayCommand(GoToArticle);
             FavoriteCommand = new RelayCommand(OnFavorite);
         }

@@ -10,17 +10,26 @@ namespace Final_excersise.Models
 {
     public class Settings : BindableBase
     {
+        private string _authToken;
+        private string _username;
+
         public static Settings SingleInstance { get; } = new Settings();
 
-        private Settings()
+        public string AuthToken
         {
-            
+            get { return _authToken; }
+            set
+            {
+                SetProperty(ref _authToken, value);
+                OnPropertyChanged(nameof(IsLoggedIn));
+            }
         }
 
-        public List<Feed> Feeds { get; set; }
-
-        public string AuthToken { get; set; }
-        public string Username { get; set; }
+        public string Username
+        {
+            get { return _username; }
+            set { SetProperty(ref _username, value); }
+        }
 
         public bool IsLoggedIn
         {
@@ -28,6 +37,11 @@ namespace Final_excersise.Models
             {
                 return !string.IsNullOrWhiteSpace(AuthToken);
             }
-        } 
+        }
+
+        private Settings()
+        {
+            
+        }
     }
 }

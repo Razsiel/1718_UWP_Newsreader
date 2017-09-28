@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Popups;
@@ -24,11 +25,10 @@ namespace Final_excersise.ViewModels
         private readonly IArticleService _articleService;
         private readonly IAuthenticationService _authenticationService;
 
-        public ObservableIncrementalLoadingCollection<ArticleListViewModel> Articles { get; set; }
+        public ObservableIncrementalLoadingCollection<ArticleDetailViewModel> Articles { get; set; }
         public RelayCommand ArticleClickCommand { get; }
         public RelayCommand LogInCommand { get; }
         public RelayCommand LogOutCommand { get; }
-        public RelayCommand RegisterCommand { get; }
         public RelayCommand RefreshArticles { get; }
 
         private MainViewModel()
@@ -36,19 +36,18 @@ namespace Final_excersise.ViewModels
             _articleService = ArticleService.SingleInstance;
             _authenticationService = AuthenticationService.SingleInstance;
 
-            Articles = new ObservableIncrementalLoadingCollection<ArticleListViewModel>();
+            Articles = new ObservableIncrementalLoadingCollection<ArticleDetailViewModel>();
             Articles.LoadMoreItemsEvent += ArticlesOnLoadMoreItemsEvent;
 
             ArticleClickCommand = new RelayCommand(OnArticleClick);
             LogInCommand = new RelayCommand(OnLogin);
             LogOutCommand = new RelayCommand(OnLogoutAsync);
-            RegisterCommand = new RelayCommand(OnRegister);
             RefreshArticles = new RelayCommand(OnRefresh);
         }
 
-        private List<ArticleListViewModel> ArticlesOnLoadMoreItemsEvent(uint count)
+        private List<ArticleDetailViewModel> ArticlesOnLoadMoreItemsEvent(uint count)
         {
-            var list = new List<ArticleListViewModel>();
+            var list = new List<ArticleDetailViewModel>();
             // On initial load get the first 20 articles
             if (_nextId < 0)
             {
@@ -56,7 +55,7 @@ namespace Final_excersise.ViewModels
                 _nextId = articlesResult.NextId;
                 foreach (var article in articlesResult.Results)
                 {
-                    list.Add(new ArticleListViewModel(article));
+                    list.Add(new ArticleDetailViewModel(article));
                 }
             }
             else
@@ -67,7 +66,7 @@ namespace Final_excersise.ViewModels
                     var article = articleResult.Results.FirstOrDefault(); // collection will always contain 1 element with this api call. Hence the 'FirstOrDefault' call.
                     if (article != null)
                     {
-                        list.Add(new ArticleListViewModel(article));
+                        list.Add(new ArticleDetailViewModel(article));
                         //Prep the method for next time the api call is done.
                         _nextId = articleResult.NextId;
                     }
@@ -80,7 +79,7 @@ namespace Final_excersise.ViewModels
         public void OnArticleClick(object o)
         {
             // Cast the clicked object to the viewmodel underlying it
-            var articleListViewModel = o as ArticleListViewModel;
+            var articleListViewModel = o as ArticleDetailViewModel;
             if (articleListViewModel?.Article == null) return;
 
             // Navigate to the detail page of the clicked article
@@ -96,22 +95,23 @@ namespace Final_excersise.ViewModels
             // If login was succesful -> show welcome message and refresh the page
             if (dialog.Result == SignInResult.SignInOK)
             {
+                // Refresh articles (clears the liked attribute)
+                OnRefresh(null);
+                // Show welcome dialog
                 var message = new MessageDialog($"Welcome {Settings.Username}!");
                 await message.ShowAsync();
-                RefreshArticles.Execute(null);
-                ((Frame)Window.Current.Content).Navigate(typeof(MainPage));
             }
         }
 
         private async void OnLogoutAsync(object o)
         {
-            var dialog = new MessageDialog("Are you sure you want to log out?");
+            var dialog = new MessageDialog("Weet je zeker dat je uit wilt loggen?");
             // Yes button
             dialog.Commands.Add(new UICommand("Yes", command =>
             {
                 _authenticationService.LogOut();
-                ((Frame)Window.Current.Content).Navigate(typeof(MainPage));
-                RefreshArticles.Execute(null);
+                // Refresh articles (clears the liked attribute)
+                OnRefresh(null);
             }));
             dialog.DefaultCommandIndex = 0;
 
@@ -122,13 +122,8 @@ namespace Final_excersise.ViewModels
             }));
             dialog.CancelCommandIndex = (uint) (dialog.Commands.Count - 1);
 
+            // Show messagedialog
             await dialog.ShowAsync();
-        }
-
-        private void OnRegister(object obj)
-        {
-            // show dialog here
-            //_authenticationService.Register();
         }
 
         private async void OnRefresh(object obj)
