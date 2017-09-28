@@ -75,6 +75,7 @@
                    x:Name="Image" />
             <controls:IconButton x:Name="FavoriteButton"
                                  Text="Favoriet"
+                                 Background="{ThemeResource ButtonBackgroundThemeBrush}"
                                  Symbol="OutlineStar"
                                  VerticalAlignment="Bottom"
                                  HorizontalAlignment="Right"

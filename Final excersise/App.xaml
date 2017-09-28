@@ -10,5 +10,6 @@
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
         <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
         <converters:StringNullToVisibilityConverter x:Key="StringNullToVisibilityConverter" />
+        <converters:FavoriteBoolToSymbolConverter x:Key="FavoriteBoolToSymbolConverter" />
     </Application.Resources>
 </Application>

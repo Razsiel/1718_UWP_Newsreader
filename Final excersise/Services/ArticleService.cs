@@ -40,6 +40,13 @@ namespace Final_excersise.Services
             await base.GetJsonResultAsync<object>(uri, method, xauthtoken: Settings.SingleInstance.AuthToken);
             return true;
         }
+
+        public async Task<ArticlesResult> GetLikedArticles()
+        {
+            var uri = $"{ServiceUri}/liked";
+            var result = await base.GetJsonResultAsync<ArticlesResult>(uri, xauthtoken: Settings.SingleInstance.AuthToken);
+            return result;
+        }
     }
 
     public interface IArticleService
@@ -47,5 +54,6 @@ namespace Final_excersise.Services
         Task<ArticlesResult> GetArticles();
         Task<ArticlesResult> GetArticleAsync(uint id);
         Task<bool> FavoriteArticle(uint id, HttpMethod method);
+        Task<ArticlesResult> GetLikedArticles();
     }
 }

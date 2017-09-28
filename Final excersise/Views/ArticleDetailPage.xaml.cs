@@ -2,15 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Final_excersise.Models;
 using Final_excersise.ViewModels;
@@ -30,7 +22,7 @@ namespace Final_excersise.Views
             DataContext = this;
         }
 
-        private ArticleDetailViewModel VM;
+        private ArticleViewModel VM;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -39,7 +31,7 @@ namespace Final_excersise.Views
             var article = e.Parameter as Article;
             if (article == null) return;
 
-            VM = new ArticleDetailViewModel(article);
+            VM = new ArticleViewModel(article);
         }
 
         private void RelatedUris_OnItemClick(object sender, ItemClickEventArgs e)
@@ -47,7 +39,7 @@ namespace Final_excersise.Views
             var url = e.ClickedItem as string;
             if (url == null) return;
 
-            var viewModel = DataContext as ArticleDetailViewModel;
+            var viewModel = DataContext as ArticleViewModel;
             if (viewModel == null) return;
 
             viewModel.ToArticleCommand.Execute(url);

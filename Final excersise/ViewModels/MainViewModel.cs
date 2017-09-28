@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Final_excersise.Controls;
-using Final_excersise.Models;
 using Final_excersise.Services;
 using Final_excersise.Views;
 using Library.Collection;
@@ -25,29 +23,31 @@ namespace Final_excersise.ViewModels
         private readonly IArticleService _articleService;
         private readonly IAuthenticationService _authenticationService;
 
-        public ObservableIncrementalLoadingCollection<ArticleDetailViewModel> Articles { get; set; }
+        public ObservableIncrementalLoadingCollection<ArticleViewModel> Articles { get; set; }
         public RelayCommand ArticleClickCommand { get; }
         public RelayCommand LogInCommand { get; }
         public RelayCommand LogOutCommand { get; }
         public RelayCommand RefreshArticles { get; }
+        public RelayCommand FavoritesClickCommand { get; }
 
         private MainViewModel()
         {
             _articleService = ArticleService.SingleInstance;
             _authenticationService = AuthenticationService.SingleInstance;
 
-            Articles = new ObservableIncrementalLoadingCollection<ArticleDetailViewModel>();
+            Articles = new ObservableIncrementalLoadingCollection<ArticleViewModel>();
             Articles.LoadMoreItemsEvent += ArticlesOnLoadMoreItemsEvent;
 
             ArticleClickCommand = new RelayCommand(OnArticleClick);
             LogInCommand = new RelayCommand(OnLogin);
             LogOutCommand = new RelayCommand(OnLogoutAsync);
             RefreshArticles = new RelayCommand(OnRefresh);
+            FavoritesClickCommand = new RelayCommand(OnFavoritesClick);
         }
 
-        private List<ArticleDetailViewModel> ArticlesOnLoadMoreItemsEvent(uint count)
+        private List<ArticleViewModel> ArticlesOnLoadMoreItemsEvent(uint count)
         {
-            var list = new List<ArticleDetailViewModel>();
+            var list = new List<ArticleViewModel>();
             // On initial load get the first 20 articles
             if (_nextId < 0)
             {
@@ -55,7 +55,7 @@ namespace Final_excersise.ViewModels
                 _nextId = articlesResult.NextId;
                 foreach (var article in articlesResult.Results)
                 {
-                    list.Add(new ArticleDetailViewModel(article));
+                    list.Add(new ArticleViewModel(article));
                 }
             }
             else
@@ -66,7 +66,7 @@ namespace Final_excersise.ViewModels
                     var article = articleResult.Results.FirstOrDefault(); // collection will always contain 1 element with this api call. Hence the 'FirstOrDefault' call.
                     if (article != null)
                     {
-                        list.Add(new ArticleDetailViewModel(article));
+                        list.Add(new ArticleViewModel(article));
                         //Prep the method for next time the api call is done.
                         _nextId = articleResult.NextId;
                     }
@@ -79,13 +79,18 @@ namespace Final_excersise.ViewModels
         public void OnArticleClick(object o)
         {
             // Cast the clicked object to the viewmodel underlying it
-            var articleListViewModel = o as ArticleDetailViewModel;
+            var articleListViewModel = o as ArticleViewModel;
             if (articleListViewModel?.Article == null) return;
 
             // Navigate to the detail page of the clicked article
             ((Frame) Window.Current.Content).Navigate(typeof(ArticleDetailPage), articleListViewModel.Article);
         }
-        
+
+        private void OnFavoritesClick(object obj)
+        {
+            ((Frame)Window.Current.Content).Navigate(typeof(FavoritesPage));
+        }
+
         private async void OnLogin(object obj)
         {
             // show login dialog (handles the logging in and backend calls)

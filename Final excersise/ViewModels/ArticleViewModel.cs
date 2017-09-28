@@ -10,7 +10,7 @@ using Library.Command;
 
 namespace Final_excersise.ViewModels
 {
-    public class ArticleDetailViewModel : BaseViewModel
+    public class ArticleViewModel : BaseViewModel
     {
         private IArticleService _articleService;
         
@@ -18,7 +18,7 @@ namespace Final_excersise.ViewModels
         public RelayCommand ToArticleCommand { get; }
         public RelayCommand FavoriteCommand { get; }
 
-        public ArticleDetailViewModel(Article article)
+        public ArticleViewModel(Article article)
         {
             _articleService = ArticleService.SingleInstance;
 
@@ -39,8 +39,7 @@ namespace Final_excersise.ViewModels
         {
             var article = obj as Article;
             if (article == null) return;
-
-
+            
             // Update server article
             if (!article.IsLiked)
             {

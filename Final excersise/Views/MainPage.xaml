@@ -10,8 +10,6 @@
     xmlns:viewModels="using:Final_excersise.ViewModels"
     mc:Ignorable="d">
     
-    
-
     <SplitView x:Name="MainSplitView"
                DisplayMode="CompactOverlay"
                IsPaneOpen="False"
@@ -46,6 +44,13 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="1">
+                        <Button x:Name="FavoritesButton"
+                                Content="Favorieten"
+                                Command="{x:Bind VM.FavoritesClickCommand}"/>
+                    </StackPanel>
+                    
                     <Grid Margin="0 10"
                           Grid.Row="2">
                         <StackPanel x:Name="LoginPanel" 
@@ -55,14 +60,11 @@
                             <controls:IconButton Text="Log In" 
                                                  Symbol="Contact" 
                                                  Command="{x:Bind VM.LogInCommand}"/>
-                            <!--<controls:IconButton Text="Register" 
-                                                 Symbol="AddFriend" 
-                                                 Margin="10, 0"/>-->
                         </StackPanel>
                         <StackPanel x:Name="RegisterPanel"
                                     VerticalAlignment="Bottom"
                                     Visibility="{x:Bind VM.Settings.IsLoggedIn, Mode=OneWay}">
-                            <TextBlock Text="{x:Bind VM.Settings.Username}"/>
+                            <TextBlock Text="{x:Bind VM.Settings.Username, Mode=OneWay}"/>
                             <controls:IconButton Text="Log out" 
                                                  Symbol="Home" 
                                                  Command="{x:Bind VM.LogOutCommand}"/>
@@ -124,7 +126,7 @@
                         </Style>
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="viewModels:ArticleDetailViewModel">
+                        <DataTemplate x:DataType="viewModels:ArticleViewModel">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="125"/>
@@ -143,60 +145,39 @@
                                 <Grid Grid.Row="0" 
                                             Grid.Column="1"
                                             Padding="20, 0, 10, 0">
-                                    
+
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
 
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup x:Name="FavoriteState">
-                                            <VisualState x:Name="IsFavorite">
-                                                <VisualState.StateTriggers>
-                                                    <StateTrigger IsActive="{Binding Article.IsLiked, Mode=OneWay}"/>
-                                                </VisualState.StateTriggers>
-                                                <VisualState.Setters>
-                                                    <Setter Target="FavoriteButton.Foreground" Value="Yellow"/>
-                                                </VisualState.Setters>
-                                            </VisualState>
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
-
-                                    <TextBlock Text="{x:Bind Article.Title}" 
+                                    <TextBlock Text="{x:Bind Article.Title, Mode=OneWay}" 
                                                FontWeight="Bold"
                                                Grid.Row="0"/>
 
-                                    <TextBlock Text="{x:Bind Article.Summary}" 
+                                    <TextBlock Text="{x:Bind Article.Summary, Mode=OneWay}" 
                                                TextWrapping="Wrap"
                                                TextTrimming="CharacterEllipsis"
                                                Grid.Row="1"/>
 
                                     <Button x:Name="FavoriteButton"
                                             Grid.Row="2"
+                                            Margin="0 10"
                                             Visibility="{x:Bind Settings.IsLoggedIn, Mode=OneWay}"
                                             Command="{x:Bind FavoriteCommand}"
-                                            CommandParameter="{x:Bind Article}">
+                                            CommandParameter="{x:Bind Article}"
+                                            Foreground="White">
                                         <Button.Content>
                                             <StackPanel Orientation="Horizontal">
-                                                <SymbolIcon Symbol="OutlineStar" Margin="0 0 10 0"/>
+                                                <SymbolIcon x:Name="FavoriteIcon" 
+                                                            Symbol="{x:Bind Article.IsLiked, Converter={StaticResource FavoriteBoolToSymbolConverter}, Mode=OneWay}" 
+                                                            Margin="0 0 10 0"
+                                                            Foreground="Yellow"/>
                                                 <TextBlock Text="Favoriet"/>
                                             </StackPanel>
                                         </Button.Content>
                                     </Button>
-
-                                    <!--<controls:IconButton x:Name="FavoriteButton"
-                                                         Foreground="White"
-                                                         Background="Transparent"
-                                                         Text="Favoriet"
-                                                         Symbol="OutlineStar"
-                                                         VerticalAlignment="Bottom"
-                                                         HorizontalAlignment="Left"
-                                                         Margin="0 10"
-                                                         Visibility="{x:Bind Settings.IsLoggedIn, Mode=OneWay}"
-                                                         Command="{Binding FavoriteCommand}"
-                                                         CommandParameter="{x:Bind Article}"
-                                                         Grid.Row="2"/>-->
                                 </Grid>
                             </Grid>
                         </DataTemplate>

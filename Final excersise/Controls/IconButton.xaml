@@ -8,8 +8,7 @@
                       d:DesignHeight="50">
     <Button  
         Command="{x:Bind Command}" 
-        CommandParameter="{x:Bind CommandParameter}"
-        Background="{x:Bind Background, Mode=OneWay}">
+        CommandParameter="{x:Bind CommandParameter}">
         <Button.Content>
             <StackPanel Orientation="Horizontal">
                 <SymbolIcon Symbol="{x:Bind Symbol, Mode=OneWay}" 

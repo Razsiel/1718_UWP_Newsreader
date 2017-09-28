@@ -1,0 +1,65 @@
+﻿<Page
+    x:Class="Final_excersise.Views.FavoritesPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Final_excersise.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="using:Final_excersise.ViewModels"
+    mc:Ignorable="d">
+
+    <StackPanel>
+        <TextBlock Text="Favorieten"
+                   FontSize="28"
+                   Padding="10 5"/>
+        <ListView ItemsSource="{x:Bind VM.Articles}" 
+                          Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                          x:Name="ArticlesListView">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="Margin" Value="0, 10, 0, 10" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="viewModels:ArticleViewModel">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="125"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="125"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" 
+                          Grid.Column="0">
+                            <Image Source="{x:Bind Article.Image}"
+                               Stretch="UniformToFill" />
+                        </Grid>
+
+                        <Grid Grid.Row="0" 
+                          Grid.Column="1"
+                          Padding="20, 0, 10, 0">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="{x:Bind Article.Title, Mode=OneWay}" 
+                                               FontWeight="Bold"
+                                               Grid.Row="0"/>
+
+                            <TextBlock Text="{x:Bind Article.Summary, Mode=OneWay}" 
+                                   TextWrapping="Wrap"
+                                   TextTrimming="CharacterEllipsis"
+                                   Grid.Row="1"/>
+                        </Grid>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackPanel>
+</Page>
