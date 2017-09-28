@@ -34,10 +34,10 @@ namespace Final_excersise.Services
             return result;
         }
 
-        public async Task<bool> PutArticle(uint id)
+        public async Task<bool> FavoriteArticle(uint id, HttpMethod method)
         {
             var uri = $"{ServiceUri}/{id}/like";
-            await base.GetJsonResultAsync<object>(uri, HttpMethod.Put, xauthtoken: Settings.SingleInstance.AuthToken);
+            await base.GetJsonResultAsync<object>(uri, method, xauthtoken: Settings.SingleInstance.AuthToken);
             return true;
         }
     }
@@ -46,6 +46,6 @@ namespace Final_excersise.Services
     {
         Task<ArticlesResult> GetArticles();
         Task<ArticlesResult> GetArticleAsync(uint id);
-        Task<bool> PutArticle(uint id);
+        Task<bool> FavoriteArticle(uint id, HttpMethod method);
     }
 }

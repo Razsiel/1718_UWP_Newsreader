@@ -66,7 +66,7 @@ namespace Final_excersise.Services
             Debug.WriteLine("register called");
         }
 
-        public async void TryAutoLogin()
+        public async Task<bool> TryAutoLogin()
         {
             var vault = new Windows.Security.Credentials.PasswordVault();
             var credentials = vault.RetrieveAll();
@@ -76,16 +76,17 @@ namespace Final_excersise.Services
                 if (user != null)
                 {
                     user.RetrievePassword();
-                    Login(user.UserName, user.Password);
+                    return await Login(user.UserName, user.Password);
                 }
             }
+            return false;
         }
     }
 
     public interface IAuthenticationService
     {
         Task<bool> Login(string username, string password);
-        void TryAutoLogin();
+        Task<bool> TryAutoLogin();
         void LogOut();
         void Register();
     }

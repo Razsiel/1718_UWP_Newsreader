@@ -22,7 +22,7 @@ namespace Final_excersise.Controls
     public sealed partial class IconButton : UserControl
     {
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(IconButton), new PropertyMetadata(default(string)));
-        public static readonly DependencyProperty SymbolProperty = DependencyProperty.Register("Symbol", typeof(string), typeof(IconButton), new PropertyMetadata(default(string)));
+        public static readonly DependencyProperty SymbolProperty = DependencyProperty.Register("Symbol", typeof(Symbol), typeof(IconButton), new PropertyMetadata(default(Symbol)));
         public static readonly DependencyProperty CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(IconButton), new PropertyMetadata(default(ICommand)));
         public static readonly DependencyProperty CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(IconButton), new PropertyMetadata(default(object)));
 
@@ -37,9 +37,9 @@ namespace Final_excersise.Controls
             set { SetValue(TextProperty, value); }
         }
 
-        public string Symbol
+        public Symbol Symbol
         {
-            get { return (string) GetValue(SymbolProperty); }
+            get { return (Symbol) GetValue(SymbolProperty); }
             set { SetValue(SymbolProperty, value); }
         }
 

@@ -111,6 +111,7 @@ namespace Final_excersise.ViewModels
             {
                 _authenticationService.LogOut();
                 ((Frame)Window.Current.Content).Navigate(typeof(MainPage));
+                RefreshArticles.Execute(null);
             }));
             dialog.DefaultCommandIndex = 0;
 

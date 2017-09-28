@@ -33,6 +33,7 @@ namespace Final_excersise
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            
         }
 
         /// <summary>
@@ -40,7 +41,7 @@ namespace Final_excersise
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -67,8 +68,9 @@ namespace Final_excersise
                 Window.Current.Content = rootFrame;
             }
 
+
             // auto login
-            AuthenticationService.SingleInstance.TryAutoLogin();
+            await AuthenticationService.SingleInstance.TryAutoLogin();
 
             if (e.PrelaunchActivated == false)
             {

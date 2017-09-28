@@ -46,8 +46,6 @@ namespace Final_excersise.Controls
         void OnOpened(ContentDialog sender, ContentDialogOpenedEventArgs args)
         {
             this.Result = SignInResult.Nothing;
-
-            //TODO: If the user has logged in before, get it and populate the user name field.
         }
 
         private void OnClosing(ContentDialog sender, ContentDialogClosingEventArgs args)
@@ -78,6 +76,7 @@ namespace Final_excersise.Controls
             if (await VM.SignInAsync())
             {
                 this.Result = SignInResult.SignInOK;
+                VM.Password = null;
             }
             else
             {

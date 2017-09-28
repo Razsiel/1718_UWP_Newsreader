@@ -6,16 +6,13 @@ using Final_excersise.ViewModels;
 
 namespace Final_excersise.Views
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainPage : Page
     {
         public MainPage()
         {
             this.InitializeComponent();
             DataContext = this;
-            NavigationCacheMode = NavigationCacheMode.Required;
+            //NavigationCacheMode = NavigationCacheMode.Required; // Enable to allow frame.GoBack() to return to the correct point in this page, unfortunately breaks dynamic binding page styling (ex. login/register btn)...
         }
 
         private MainViewModel VM => MainViewModel.SingleInstance;
@@ -28,6 +25,12 @@ namespace Final_excersise.Views
         private void HamburgerButton_OnClick(object sender, RoutedEventArgs e)
         {
             MainSplitView.IsPaneOpen = !MainSplitView.IsPaneOpen;
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            MainSplitView.IsPaneOpen = false;
+            base.OnNavigatedTo(e);
         }
     }
 }

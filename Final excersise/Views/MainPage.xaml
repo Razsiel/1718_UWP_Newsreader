@@ -59,7 +59,7 @@
                         <StackPanel x:Name="LoginPanel" 
                                     Orientation="Horizontal"
                                     VerticalAlignment="Bottom"
-                                    Visibility="{x:Bind VM.Settings.IsLoggedIn, Mode=OneWay}">
+                                    Visibility="{x:Bind VM.Settings.IsLoggedIn, Mode=OneWay, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
                             <controls:IconButton Text="Log In" 
                                                  Symbol="Contact" 
                                                  Command="{x:Bind VM.LogInCommand}"/>
@@ -69,7 +69,7 @@
                         </StackPanel>
                         <StackPanel x:Name="RegisterPanel"
                                     VerticalAlignment="Bottom"
-                                    Visibility="{x:Bind VM.Settings.IsLoggedIn, Mode=OneWay, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                                    Visibility="{x:Bind VM.Settings.IsLoggedIn, Mode=OneWay}">
                             <TextBlock Text="{x:Bind VM.Settings.Username}"/>
                             <controls:IconButton Text="Log out" 
                                                  Symbol="Home" 
@@ -168,6 +168,14 @@
                                     <TextBlock Text="{x:Bind Article.Summary}" 
                                                TextWrapping="Wrap"
                                                TextTrimming="CharacterEllipsis"/>
+
+                                    <controls:IconButton x:Name="FavoriteButton"
+                                                         Text="Favoriet"
+                                                         Symbol="OutlineStar"
+                                                         VerticalAlignment="Bottom"
+                                                         HorizontalAlignment="Right"
+                                                         Margin="10"
+                                                         Visibility="{Binding Settings.IsLoggedIn, Mode=OneWay}"/>
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>

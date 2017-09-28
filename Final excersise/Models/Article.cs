@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Library.Model;
 
 namespace Final_excersise.Models
 {
-    public class Article
+    public class Article : BindableBase
     {
         public int Id { get; set; }
         public int Feed { get; set; }

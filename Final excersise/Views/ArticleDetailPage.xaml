@@ -44,6 +44,17 @@
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
+            <VisualStateGroup x:Name="FavoriteState">
+                <VisualState x:Name="IsFavorite">
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{x:Bind VM.Article.IsLiked}"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="FavoriteButton.Symbol" Value="SolidStar"/>
+                        <Setter Target="FavoriteButton.Foreground" Value="Yellow"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         
         <Grid.ColumnDefinitions>
@@ -58,14 +69,13 @@
         <Grid Grid.Column="0"
               Grid.Row="0"
               x:Name="ImageGrid">
+
             <Image Source="{x:Bind VM.Article.Image}" 
-                   Stretch="UniformToFill" 
-                   Grid.Column="0"
-                   Grid.Row="0"
-                   x:Name="Image" >
-            </Image>
-            <controls:IconButton Text="Like"
-                                 Symbol="Like"
+                   Stretch="UniformToFill"
+                   x:Name="Image" />
+            <controls:IconButton x:Name="FavoriteButton"
+                                 Text="Favoriet"
+                                 Symbol="OutlineStar"
                                  VerticalAlignment="Bottom"
                                  HorizontalAlignment="Right"
                                  Margin="10"

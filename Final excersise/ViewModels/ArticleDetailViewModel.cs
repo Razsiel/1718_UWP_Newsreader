@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Final_excersise.Models;
@@ -38,13 +39,23 @@ namespace Final_excersise.ViewModels
             var article = obj as Article;
             if (article == null) return;
 
+
             // Update server article
-            await _articleService.PutArticle((uint)article.Id);
+            if (!article.IsLiked)
+            {
+                await _articleService.FavoriteArticle((uint) article.Id, HttpMethod.Put);
+            }
+            else
+            {
+                await _articleService.FavoriteArticle((uint) article.Id, HttpMethod.Delete);
+            }
+            
 
             // Update local article from server
             var result = await _articleService.GetArticleAsync((uint) Article.Id);
             var serverArticle = result.Results.FirstOrDefault();
-            if (serverArticle != null) Article.IsLiked = serverArticle.IsLiked;
+            if (serverArticle != null)
+                Article.IsLiked = serverArticle.IsLiked;
         }
     }
 }

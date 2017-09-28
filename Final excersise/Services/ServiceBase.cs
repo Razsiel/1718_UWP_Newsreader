@@ -31,9 +31,11 @@ namespace Final_excersise.Services
         /// <typeparam name="T">The type to desrialize into</typeparam>
         /// <param name="uri">The relative uri from the api base</param>
         /// <param name="httpMethod">The HttpMethod. Default: GET</param>
-        /// <param name="parameters">Any uri paramters</param>
+        /// <param name="parameters">OPTIONAL: Any uri paramters</param>
+        /// <param name="xauthtoken">OPTIONAL: The authentication token provided by the backend after logging in</param>
+        /// <param name="failedCallback">OPTIONAL: A callback that is triggered on failure of the request or serialisation</param>
         /// <returns></returns>
-        protected async Task<T> GetJsonResultAsync<T>(string uri, HttpMethod httpMethod = null, Dictionary<string, string> parameters = null, string xauthtoken = null)
+        protected async Task<T> GetJsonResultAsync<T>(string uri, HttpMethod httpMethod = null, Dictionary<string, string> parameters = null, string xauthtoken = null, Action failedCallback = null)
         {
             if (httpMethod == null) httpMethod = HttpMethod.Get;
             using (var client = new HttpClient())
@@ -63,9 +65,10 @@ namespace Final_excersise.Services
                 }
                 catch (Exception e)
                 {
-                    var messageDialog = new MessageDialog($"Something went wrong whilst trying to convert JSON to {typeof(T).FullName}: \n {e.Message}");
+                    //var messageDialog = new MessageDialog($"Something went wrong whilst trying to convert JSON to {typeof(T).FullName}: \n {e.Message}");
+                    //await messageDialog.ShowAsync();
                     Console.WriteLine(e);
-                    await messageDialog.ShowAsync();
+                    failedCallback?.Invoke();
                     return default(T);
                 }
             }
