@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.UI.Popups;
 using Final_excersise.Models;
 using Final_excersise.Services;
 using Library.Command;
@@ -42,23 +43,32 @@ namespace Final_excersise.ViewModels
         {
             var article = obj as Article;
             if (article == null) return;
-            
-            // Update server article
-            if (!article.IsLiked)
-            {
-                await _articleService.FavoriteArticle((uint) article.Id, HttpMethod.Put);
-            }
-            else
-            {
-                await _articleService.FavoriteArticle((uint) article.Id, HttpMethod.Delete);
-            }
-            
 
-            // Update local article from server
-            var result = await _articleService.GetArticleAsync((uint) Article.Id);
-            var serverArticle = result.Results.FirstOrDefault();
-            if (serverArticle != null)
-                Article.IsLiked = serverArticle.IsLiked;
+            try
+            {
+                if (!article.IsLiked)
+                {
+                    await _articleService.FavoriteArticle((uint)article.Id, HttpMethod.Put);
+                }
+                else
+                {
+                    await _articleService.FavoriteArticle((uint)article.Id, HttpMethod.Delete);
+                }
+
+
+                // Update local article from server
+                var result = await _articleService.GetArticleAsync((uint)Article.Id);
+                var serverArticle = result?.Results?.FirstOrDefault();
+                if (serverArticle != null)
+                {
+                    Article.IsLiked = serverArticle.IsLiked;
+                }
+            }
+            catch (Exception e)
+            {
+                OnNetworkFailure();
+            }
+            // Update server article
         }
         
         private void OnShare(object obj)

@@ -54,33 +54,41 @@ namespace Final_excersise.ViewModels
             }
             var list = new List<ArticleViewModel>();
             _loading = true;
-            // On initial load get the first 20 articles
-            if (_nextId < 0)
+            try
             {
-                var articlesResult = _articleService.GetArticles().Result;
-                _nextId = articlesResult.NextId;
-                foreach (var article in articlesResult.Results)
+                // On initial load get the first 20 articles
+                if (_nextId < 0)
                 {
-                    list.Add(new ArticleViewModel(article));
-                }
-                _loading = false;
-            }
-            else
-            {
-                for (int i = 0; i < 20; i++) //replace '20' with 'count' to allow load-by-demand
-                {
-                    var articleResult = _articleService.GetArticleAsync((uint)_nextId).Result;
-                    var article = articleResult.Results.FirstOrDefault(); // collection will always contain 1 element with this api call. Hence the 'FirstOrDefault' call.
-                    if (article != null)
+                    var articlesResult = _articleService.GetArticles().Result;
+                    if (articlesResult != null)
                     {
-                        list.Add(new ArticleViewModel(article));
-                        //Prep the method for next time the api call is done.
-                        _nextId = articleResult.NextId;
+                        _nextId = articlesResult.NextId;
+                        foreach (var article in articlesResult.Results)
+                        {
+                            list.Add(new ArticleViewModel(article));
+                        }
                     }
                 }
-                _loading = false;
+                else
+                {
+                    for (int i = 0; i < 20; i++) //replace '20' with 'count' to allow load-by-demand
+                    {
+                        var articleResult = _articleService.GetArticleAsync((uint)_nextId).Result;
+                        var article = articleResult?.Results?.FirstOrDefault(); // collection will always contain 1 element with this api call. Hence the 'FirstOrDefault' call.
+                        if (article != null)
+                        {
+                            list.Add(new ArticleViewModel(article));
+                            //Prep the method for next time the api call is done.
+                            _nextId = articleResult.NextId;
+                        }
+                    }
+                }
             }
-            
+            catch (Exception e)
+            {
+                OnNetworkFailure();
+            }
+            _loading = false;
             return list;
         }
 

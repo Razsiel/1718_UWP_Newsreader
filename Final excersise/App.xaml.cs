@@ -8,6 +8,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -70,7 +71,12 @@ namespace Final_excersise
 
 
             // auto login
-            await AuthenticationService.SingleInstance.TryAutoLogin();
+            var succes = await AuthenticationService.SingleInstance.TryAutoLogin();
+            if (!succes)
+            {
+                var messageDialog = new MessageDialog($"Er is helaas iets mis gegaan met het automatisch inloggen. Dit kan komen door een slechte internet verbinding of een andere netwerkfout. Je kan zelf opnieuw proberen in te loggen via het inlog menu.");
+                await messageDialog.ShowAsync();
+            }
 
             if (e.PrelaunchActivated == false)
             {

@@ -76,7 +76,14 @@ namespace Final_excersise.Services
                 if (user != null)
                 {
                     user.RetrievePassword();
-                    return await Login(user.UserName, user.Password);
+                    try
+                    {
+                        return await Login(user.UserName, user.Password);
+                    }
+                    catch (Exception e)
+                    {
+                        return false;
+                    }
                 }
             }
             return false;

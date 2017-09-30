@@ -25,7 +25,14 @@ namespace Final_excersise.ViewModels
 
         public async Task<bool> SignInAsync()
         {
-            return await _authenticationService.Login(UserName, Password);
+            try
+            {
+                return await _authenticationService.Login(UserName, Password);
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
     }
 }
