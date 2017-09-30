@@ -22,6 +22,7 @@ namespace Final_excersise.ViewModels
         private int _nextId = -1;
         private readonly IArticleService _articleService;
         private readonly IAuthenticationService _authenticationService;
+        private bool _loading;
 
         public ObservableIncrementalLoadingCollection<ArticleViewModel> Articles { get; set; }
         public RelayCommand ArticleClickCommand { get; }
@@ -47,7 +48,12 @@ namespace Final_excersise.ViewModels
 
         private List<ArticleViewModel> ArticlesOnLoadMoreItemsEvent(uint count)
         {
+            if (_loading)
+            {
+                return null;
+            }
             var list = new List<ArticleViewModel>();
+            _loading = true;
             // On initial load get the first 20 articles
             if (_nextId < 0)
             {
@@ -57,6 +63,7 @@ namespace Final_excersise.ViewModels
                 {
                     list.Add(new ArticleViewModel(article));
                 }
+                _loading = false;
             }
             else
             {
@@ -71,6 +78,7 @@ namespace Final_excersise.ViewModels
                         _nextId = articleResult.NextId;
                     }
                 }
+                _loading = false;
             }
             
             return list;
@@ -134,6 +142,7 @@ namespace Final_excersise.ViewModels
         private async void OnRefresh(object obj)
         {
             // Reload loaded articles before navigating
+            _loading = false;
             _nextId = -1;
             Articles.Clear();
             await Articles.LoadMoreItemsAsync(0);
